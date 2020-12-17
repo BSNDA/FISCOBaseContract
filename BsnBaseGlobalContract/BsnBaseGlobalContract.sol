@@ -3,7 +3,9 @@ pragma experimental ABIEncoderV2;
 import "./Table.sol";
 
 contract BsnBaseGlobalContract {
-
+    event InsertResult(int256 count, string base_id, int256 base_key, string base_value);
+    event UpdateResult(int256 count, string base_id, int256 base_key, string base_value);
+    event DeleteResult(int256 count, string base_id, int256 base_key);
 
     TableFactory tableFactory;
     string constant TABLE_NAME = "t_base";
@@ -55,7 +57,7 @@ contract BsnBaseGlobalContract {
         entry.set("base_value", base_value);
 
         int256 count = table.insert(base_id, entry);
-
+        emit InsertResult(count, base_id, base_key, base_value);
         return count;
     }
     //update records
@@ -73,7 +75,7 @@ contract BsnBaseGlobalContract {
         condition.EQ("base_key", base_key);
 
         int256 count = table.update(base_id, entry, condition);
-
+        emit UpdateResult(count, base_id, base_key, base_value);
         return count;
     }
     //remove records
@@ -85,7 +87,7 @@ contract BsnBaseGlobalContract {
         condition.EQ("base_key", base_key);
 
         int256 count = table.remove(base_id, condition);
-
+        emit DeleteResult(count, base_id, base_key);
         return count;
     }
 }
